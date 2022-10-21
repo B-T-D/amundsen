@@ -4,13 +4,12 @@
 import json
 import logging
 from typing import (
-    Any, Dict, List,
+    Dict, List,
 )
 
 from amundsen_common.models.search import (
     Filter, HighlightOptions, SearchResponse,
 )
-from elasticsearch import Elasticsearch
 from elasticsearch_dsl import (
     MultiSearch, Q, Search,
 )
@@ -92,46 +91,6 @@ class ElasticsearchProxyV2_1(ElasticsearchProxyV2):
         Resource.FEATURE: FEATURE_MAPPING,
         Resource.USER: USER_MAPPING,
     }
-
-    # The overriding of __new__ here is a temporary solution to provide backwards compatiblity
-    # until most of the community has moved to using the new Elasticsearch mappings and it will
-    # be removed once ElasticsearchProxyV2 id deprecated
-    def __new__(cls: Any,
-                host: str,
-                user: str,
-                password: str,
-                client: Elasticsearch,
-                page_size: int, *args: str, **kwargs: int) -> Any:
-        elasticsearch_client = None
-        if client:
-            elasticsearch_client = client
-        else:
-            http_auth = (user, password) if user else None
-            elasticsearch_client = Elasticsearch(host, http_auth=http_auth)
-
-        # check if any index uses the most up to date mappings (version == 2)
-        indices = elasticsearch_client.indices.get_alias(index='*')
-        mappings_up_to_date = False
-        for index in indices:
-            index_mapping = elasticsearch_client.indices.get_mapping(index=index).get(index)
-            mapping_meta_field = index_mapping.get('mappings').get('_meta')
-            if mapping_meta_field is not None and mapping_meta_field.get('version') == 2:
-                mappings_up_to_date = True
-                break
-
-        if mappings_up_to_date:
-            # Use ElasticsearchProxyV2_1 if indexes are up to date with mappings
-            obj = super(ElasticsearchProxyV2_1, cls).__new__(cls)
-            return obj
-
-        # If old mappings are used proxy client should be ElasticsearchProxyV2
-        obj = super(ElasticsearchProxyV2_1, cls).__new__(ElasticsearchProxyV2)
-        obj.__init__(host=host,
-                     user=user,
-                     password=password,
-                     client=elasticsearch_client,
-                     page_size=page_size)
-        return obj
 
     def get_index_alias_for_resource(self, resource_type: Resource) -> str:
         resource_str = resource_type.name.lower()
