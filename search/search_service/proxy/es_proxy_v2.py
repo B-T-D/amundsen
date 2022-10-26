@@ -196,7 +196,7 @@ class ElasticsearchProxyV2():
         """
         Builds the query object for all of the filters given in the search request
         """
-        mapping = self.RESOURCE_TO_MAPPING.get(resource)
+        mapping = type(self).RESOURCE_TO_MAPPING.get(resource)
 
         filter_queries: List = []
 
