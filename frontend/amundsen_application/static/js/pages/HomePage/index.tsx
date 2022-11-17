@@ -59,13 +59,13 @@ export class HomePage extends React.Component<HomePageProps> {
               <BadgesListContainer shortBadgesList />
             </div>
             <div className="home-element-container">
+              <PopularTables />
+            </div>
+            <div className="home-element-container">
               <TagsListContainer shortTagsList />
             </div>
             <div className="home-element-container">
               <MyBookmarks />
-            </div>
-            <div className="home-element-container">
-              <PopularTables />
             </div>
           </div>
           {announcementsEnabled() && (
