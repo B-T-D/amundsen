@@ -80,9 +80,14 @@ def popular_resources() -> Response:
     Schema Defined Here:
     https://github.com/lyft/amundsenmetadatalibrary/blob/master/metadata_service/api/popular_tables.py
     """
+
+    LOGGER.info(f'popular_resources() was called')
     try:
         if app.config['AUTH_USER_METHOD'] and app.config['POPULAR_RESOURCES_PERSONALIZATION']:
+            LOGGER.info(f'{app.config["POPULAR_RESOURCES_PERSONALIZATION"]=}')
             user_id = app.config['AUTH_USER_METHOD'](app).user_id
+            user_id = 'bdye@lyft.com'  # TODO
+            LOGGER.info(f'{user_id=}')
         else:
             user_id = ''
 

@@ -47,6 +47,7 @@ STATIC_ROOT = os.getenv('STATIC_ROOT', 'static')
 static_dir = os.path.join(PROJECT_ROOT, STATIC_ROOT)
 
 
+
 def create_app(config_module_class: str = None, template_folder: str = None) -> Flask:
     """ Support for importing arguments for a subclass of flask.Flask """
     args = ast.literal_eval(FLASK_APP_KWARGS_DICT_STR) if FLASK_APP_KWARGS_DICT_STR else {}
@@ -58,6 +59,8 @@ def create_app(config_module_class: str = None, template_folder: str = None) -> 
     if not config_module_class:
         config_module_class = os.getenv('FRONTEND_SVC_CONFIG_MODULE_CLASS')
 
+
+
     app.config.from_object(config_module_class)
 
     if app.config.get('LOG_CONFIG_FILE'):
@@ -68,6 +71,8 @@ def create_app(config_module_class: str = None, template_folder: str = None) -> 
 
     logging.info('Created app with config name {}'.format(config_module_class))
     logging.info('Using metadata service at {}'.format(app.config.get('METADATASERVICE_BASE')))
+
+    app.config['SEARCHSERVICE_BASE'] = 'http://192.168.1.164:5001'  # TODO
     logging.info('Using search service at {}'.format(app.config.get('SEARCHSERVICE_BASE')))
 
     api_bp = Blueprint('api', __name__)

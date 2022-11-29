@@ -50,7 +50,7 @@ class Config:
     # DEPRECATED (since version 3.9.0): Please use `POPULAR_RESOURCES_PERSONALIZATION`
     # Personalize the popular tables response for the current authenticated user
     POPULAR_TABLE_PERSONALIZATION = None
-    POPULAR_RESOURCES_PERSONALIZATION = True  # type: bool
+    POPULAR_RESOURCES_PERSONALIZATION = False  # type: bool
 
     # Request Timeout Configurations in Seconds
     REQUEST_SESSION_TIMEOUT_SEC = 3

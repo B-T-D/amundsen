@@ -19,6 +19,29 @@ export interface BadgeBrowseListProps {
   shortBadgesList?: boolean;
 }
 
+AppConfig {
+  HomePageLayout: Widget[];
+}
+
+
+type Widget = {
+  name: string;
+  options: {
+    path: '//';
+  };
+  // size: number; //1,2,3-12
+}
+type HomepageLayout = Widget[];
+
+getHomepageWidgets (layout: HomepageLayout): React.ReactNode[];
+
+Next Steps
+1.- Group the search widget
+1.1- Move the widgets to the features folder
+2.- Refactor the homepage to use 'getHomepageWidgets'
+3.- Create the configuration HomepageLayout, add Widget
+4.- Adding the new PopularByTeam widget, chnage custom config
+
 const BadgeBrowseListShort: React.FC<BadgeBrowseListProps> = ({
   badges,
 }: BadgeBrowseListProps) => {
