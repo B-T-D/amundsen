@@ -55,7 +55,7 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 CORS_ENABLED = os.environ.get('CORS_ENABLED', False)
 
 
-def create_app(*, config_module_class: str) -> Flask:
+def create_app(*, config_module_class: str = None) -> Flask:
     """
     Creates app in function so that flask with flask extensions can be
     initialized with specific config. Here it defines the route of APIs
@@ -88,6 +88,7 @@ def create_app(*, config_module_class: str) -> Flask:
 
     if CORS_ENABLED:
         CORS(app)
+
     config_module_class = \
         os.getenv('METADATA_SVC_CONFIG_MODULE_CLASS') or config_module_class
     app.config.from_object(config_module_class)
@@ -98,6 +99,7 @@ def create_app(*, config_module_class: str) -> Flask:
         logging.basicConfig(format=app.config.get('LOG_FORMAT'), datefmt=app.config.get('LOG_DATE_FORMAT'))
         logging.getLogger().setLevel(app.config.get('LOG_LEVEL'))
     logging.info('Created app with config name {}'.format(config_module_class))
+    print(f'from print with flush: Created app with config name {config_module_class}', flush=True)
     logging.info('Using backend {}'.format(app.config.get('PROXY_CLIENT')))
 
     # Initialize custom extensions and routes
