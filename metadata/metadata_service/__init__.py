@@ -100,6 +100,8 @@ def create_app(*, config_module_class: str = None) -> Flask:
         logging.getLogger().setLevel(app.config.get('LOG_LEVEL'))
     logging.info('Created app with config name {}'.format(config_module_class))
     print(f'from print with flush: Created app with config name {config_module_class}', flush=True)
+    print(
+        f'from print with flush, file=stderr: Created app with config name {config_module_class}', file=sys.stderr, flush=True)
     logging.info('Using backend {}'.format(app.config.get('PROXY_CLIENT')))
 
     # Initialize custom extensions and routes
